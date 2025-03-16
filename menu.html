@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="stilo2.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pizzería</title>
+</head>
+<body>
+    <header>
+        <h1 class="titulo" onmouseover="mostrarDinosaurio()" onmouseout="ocultarDinosaurio()">TREX.PI</h1>
+        <div class="dinosaurio" id="dino">
+            <img src="dino-unscreen.gif" alt="Dinosaurio">
+        </div>
+    </header>
+
+    <div class="user-info">
+        <input type="text" id="username" value="" readonly>
+        <input type="text" id="points" value="Puntos: 0" readonly>
+        <button onclick="mostrarContenido('recompensas')">Canjear Puntos</button>
+    </div>
+    
+    <nav>
+        <a onclick="mostrarContenido('menu')">Menú</a>
+        <a onclick="mostrarContenido('promociones')">Pedidos</a>
+        <a onclick="mostrarContenido('ubicacion')">Ubicación</a>
+        <a onclick="mostrarContenido('pedido')">Pago</a>
+        
+        
+    </nav>
+
+    <section id="menu">
+        <center> 
+            <div class="intro">
+                <h2>Bienvenido a la Pizzería</h2>
+                <p>Somos tu mejor opción para disfrutar de deliciosas pizzas caseras y económicas</p>
+                <img src="pi.gif" alt="Imagen de la Pizzería">
+            </div>
+        </center>
+    </section>
+
+    <section id="promociones">
+        <center>
+            <h2>Promociones</h2>
+            <div class="pizza">
+                <img src="tr5.jpg" alt="Pizza 1">
+                <h3>Pizza Hawaiana - $110 <input type="checkbox" value="110" onclick="calcularTotal(this)"></h3>
+                <p>Promoción: 20% de descuento</p>
+            </div>
+            <div class="pizza"> 
+                <img src="tr1.jpg" alt="Pizza 2">
+                <h3>Pizza Pepperoni - $110 <input type="checkbox" value="110" onclick="calcularTotal(this)"></h3>
+                <p>Promoción: Lleva 2 y paga 1</p>
+            </div>
+            <div class="pizza">
+                <img src="tr2.png" alt="Pizza 3">
+                <h3>Pizza Vegetariana - $130 <input type="checkbox" value="130" onclick="calcularTotal(this)"></h3>
+                <p>Promoción: Combo con bebida gratis</p>
+            </div>
+            <div class="pizza">
+                <img src="bebidas.jpg" alt="bebidas">
+                <h3>Refresco - $18 <input type="checkbox" value="18" onclick="calcularTotal(this)"></h3>
+            </div>
+            <div class="pizza">
+                <img src="jugote.webp" alt="bebidas">
+                <h3>Jugo natural - $15 <input type="checkbox" value="15" onclick="calcularTotal(this)"></h3>
+            </div>
+
+            <h2>Agregar Producto</h2>
+            <select id="productSelect">
+                <option value="0">Selecciona una pizza</option>
+                <option value="110">Pizza Hawaiana - $110</option>
+                <option value="110">Pizza Pepperoni - $110</option>
+                <option value="130">Pizza Vegetariana - $130</option>
+                <option value="18">Refresco - $18</option>
+                <option value="15">Jugo natural - $15</option>
+                <option value="20">Agua mineral - $20</option>
+            </select>
+            <button onclick="addProduct()">Agregar Producto</button>
+            <div id="selectedProducts"></div>
+            <button onclick="transferirPedido()">Transferir al Pago<span id="totalPagar"></span></button>
+            
+            <!-- Botón para hacer pedido -->
+            <button onclick="mostrarContenido('hacerPedido')">Hacer Pedido</button>
+            
+        </center>
+    </section>
+
+    <section id="ubicacion">
+        <center>
+            <h2>Ubicación de la Pizzería</h2>
+            <p>Gladiola 26, El Palmar, 57310 Cdad. Nezahualcóyotl, Méx.</p>
+            <img src="mapa.jpg" alt="Mapa de la Ubicación">
+            <button onclick="trazarCamino()">Trazar Camino</button>
+            <p><a href="https://www.google.com/maps/dir/?api=1&destination=Gladiola+26,+El+Palmar,+57310+Cdad.+Nezahualcóyotl,+Méx." target="_blank">Abrir en Google Maps</a></p>
+        </center>
+    </section>
+
+    <section id="pedido" style="display:none;">
+        <center>
+            <h2>Total a pagar</h2>
+            <div id="totalSection"></div>
+            <h2>Elija su método de pago</h2>
+            
+            <button onclick="pagoEnEfectivo()">Pagar en efectivo</button>
+            <button onclick="mostrarFormularioPago()">Pagar en línea</button>
+            
+            <p>Tiempo estimado de entrega: 30 minutos</p>
+        </center>
+    </section>
+
+    <section id="formularioPago" style="display:none;">
+        <center>
+            <h2>Ingrese los datos de su tarjeta</h2>
+            <form id="paymentForm">
+                <label for="cardNumber">Número de tarjeta:</label>
+                <input type="text" id="cardNumber" name="cardNumber" required><br><br>
+                <label for="expirationDate">Fecha de expiración:</label>
+                <input type="text" id="expirationDate" name="expirationDate" placeholder="MM/YY" required><br><br>
+                <label for="cvv">CVV:</label>
+                <input type="text" id="cvv" name="cvv" required><br><br>
+                <button type="button" onclick="realizarPagoEnLinea()">Pagar</button>
+            </form>
+        </center>
+    </section>
+
+    <section id="recompensas" style="display:none;">
+        <center>
+            <h2>Recompensas</h2>
+            <div class="recompensa">
+                <h3>Pizza Gratis</h3>
+                <p>500 puntos</p>
+                <button onclick="canjearRecompensa('Pizza Gratis', 500)">Canjear</button>
+            </div>
+            <div class="recompensa">
+                <h3>Refresco Gratis</h3>
+                <p>200 puntos</p>
+                <button onclick="canjearRecompensa('Refresco Gratis', 200)">Canjear</button>
+            </div>
+            <div class="recompensa">
+                <h3>Descuento de $50</h3>
+                <p>300 puntos</p>
+                <button onclick="canjearRecompensa('Descuento de $50', 300)">Canjear</button>
+            </div>
+            <button onclick="mostrarContenido('menu')">Volver al Menú</button>
+        </center>
+    </section>
+
+    <!-- Nueva sección para hacer pedido -->
+    <section id="hacerPedido" style="display:none;">
+        <center>
+            <h2>Hacer Pedido</h2>
+            <form id="pedidoForm" onsubmit="redirigirGoogleMaps(event)">
+                <label for="direccion">Ingresa tu ubicación:</label>
+                <input type="text" id="direccion" name="direccion" placeholder="Tu dirección" required><br><br>
+                <button type="submit" onclick="mostrarAlertaPedido(); enviarPedidoWhatsApp();">Enviar Pedido</button>
+
+
+            </form>
+        </center>
+    </section>
+
+    <script>
+        var selectedProducts = [];
+        var puntosUsuario = 0;
+
+        // Simulación de inicio de sesión
+        var usuarioActual = "Jesus";
+
+        function calcularTotal() {
+            var total = 0;
+            selectedProducts.forEach(function(product) {
+                total += product.price;
+            });
+            document.getElementById('totalPagar').textContent = ` - Total: $${total}`;
+        }
+
+        function addProduct() {
+            var select = document.getElementById('productSelect');
+            var selectedOption = select.options[select.selectedIndex];
+            if (selectedOption.value !== "0") {
+                selectedProducts.push({ name: selectedOption.text, price: parseFloat(selectedOption.value) });
+                updateSelectedProducts();
+                calcularTotal();
+            }
+        }
+
+        function updateSelectedProducts() {
+            var productsList = '';
+            selectedProducts.forEach(function(product) {
+                productsList += `<p>${product.name} - $${product.price}</p>`;
+            });
+            document.getElementById('selectedProducts').innerHTML = productsList;
+        }
+
+        function realizarPago() {
+            mostrarContenido('pedido');
+        }
+
+        function pagoEnEfectivo() {
+            puntosUsuario += 15;
+            actualizarPuntos();
+            alert('¡Gracias por su compra! Por favor, tenga la cantidad en mano.');
+        }
+
+        function mostrarFormularioPago() {
+            document.getElementById('formularioPago').style.display = 'block';
+        }
+
+        function realizarPagoEnLinea() {
+            puntosUsuario += 15;
+            actualizarPuntos();
+            alert('Pago exitoso');
+        }
+
+        function trazarCamino() {
+            // Función para trazar el camino
+        }
+
+        function mostrarContenido(id) {
+            var secciones = document.getElementsByTagName('section');
+            for (var i = 0; i < secciones.length; i++) {
+                secciones[i].style.display = 'none';
+            }
+            document.getElementById(id).style.display = 'block';
+        }
+
+        function transferirPedido() {
+            var total = document.getElementById('totalPagar').textContent;
+            var pedidoDomicilio = document.getElementById('pedido');
+            var totalPedido = document.createElement('p');
+            totalPedido.textContent = 'Total a pagar: ' + total;
+            pedidoDomicilio.appendChild(totalPedido);
+            mostrarContenido('pedido');
+        }
+
+        function actualizarPuntos() {
+            document.getElementById('points').value = `Puntos: ${puntosUsuario}`;
+        }
+
+        function canjearRecompensa(recompensa, costo) {
+            if (puntosUsuario >= costo) {
+                puntosUsuario -= costo;
+                actualizarPuntos();
+                alert(`Has canjeado ${costo} puntos por: ${recompensa}`);
+            } else {
+                alert('No tienes suficientes puntos para esta recompensa.');
+            }
+        }
+
+        // Actualiza el nombre del usuario al cargar la página
+        document.getElementById('username').value = usuarioActual;
+
+        function mostrarDinosaurio() {
+            document.getElementById('dino').style.display = 'block'; // Muestra el dinosaurio cuando pasas el cursor sobre el título
+        }
+
+        function ocultarDinosaurio() {
+            document.getElementById('dino').style.display = 'none'; // Oculta el dinosaurio cuando sacas el cursor del título
+        }
+
+        // Redirige a Google Maps con la ubicación ingresada
+        function redirigirGoogleMaps(event) {
+            event.preventDefault();
+            var direccion = document.getElementById('direccion').value;
+            var url = `https://www.google.com/maps/dir/?api=1&origin=Gladiola+26,+El+Palmar,+57310+Cdad.+Nezahualcóyotl,+Méx.&destination=${encodeURIComponent(direccion)}`;
+            window.open(url, '_blank');
+        }
+        function mostrarAlertaPedido() {
+    if (selectedProducts.length === 0) {
+        alert("No has seleccionado ningún producto.");
+        return;
+    }
+
+    let mensaje = "Tu pedido incluye:\n";
+    selectedProducts.forEach(product => {
+        mensaje += `- ${product.name}\n`;
+    });
+
+    mensaje += "\n¡Gracias por tu pedido! Será preparado en breve.";
+
+    alert(mensaje);
+}
+function enviarPedidoWhatsApp() {
+    if (selectedProducts.length === 0) {
+        alert("No has seleccionado ningún producto.");
+        return;
+    }
+
+    let numeroTelefono = "+525628271292"; // Número donde se enviará el pedido (ajústalo según sea necesario)
+    let mensaje = "📦 *Nuevo Pedido*\n";
+    
+    selectedProducts.forEach(product => {
+        mensaje += `- ${product.name}\n`;
+    });
+
+    mensaje += "\n🚴‍♂️ *Por favor, prepáralo y entrégalo pronto!*";
+    
+    // Codificar mensaje para URL
+    let url = `https://wa.me/${numeroTelefono}?text=${encodeURIComponent(mensaje)}`;
+
+    // Abrir WhatsApp con el mensaje listo
+    window.open(url, "_blank");
+}
+
+
+    </script>
+
+    <footer> 
+        <p>WhatsApp: +52-56-10-72-51-02</p>
+        <p>
+            <a href="https://www.facebook.com/trexpi123"><i class="fab fa-facebook-square"></i> T-rex.pi</a>
+        </p>
+        <p>
+            <a href="https://www.instagram.com/Trex.pi"><i class="fab fa-instagram"></i> trex.pi:)</a>
+        </p>
+    </footer>
+</body>
+</html>
